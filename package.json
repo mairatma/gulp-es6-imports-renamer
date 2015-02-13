@@ -27,6 +27,7 @@
   ],
   "dependencies": {
     "es6-imports-renamer": "git://github.com/mairatma/es6-imports-renamer",
+    "gulp-util": "^3.0.1",
     "recast": "^0.9.18",
     "through2": "^0.6.1",
     "vinyl-sourcemaps-apply": "^0.1.1"
