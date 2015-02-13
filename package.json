@@ -31,5 +31,8 @@
     "recast": "^0.9.18",
     "through2": "^0.6.1",
     "vinyl-sourcemaps-apply": "^0.1.1"
+  },
+  "devDependencies": {
+    "systemjs": "^0.13.2"
   }
 }

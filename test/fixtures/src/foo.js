@@ -1,0 +1,1 @@
+import core from 'dependency1/core';
