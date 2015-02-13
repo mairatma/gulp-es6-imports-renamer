@@ -1,6 +1,6 @@
 var gutil = require('gulp-util');
 var fs = require('fs');
-var recast = require('es6-imports-renamer/node_modules/recast');
+var recast = require('recast');
 var renamer = require('es6-imports-renamer');
 var sourceMap  = require('vinyl-sourcemaps-apply');
 var through = require('through2');

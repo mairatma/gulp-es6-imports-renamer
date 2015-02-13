@@ -2,7 +2,7 @@ var assert = require('assert');
 var fs = require('fs');
 var gutil = require('gulp-util');
 var path = require('path');
-var System = require('es6-imports-renamer/node_modules/systemjs');
+var System = require('systemjs');
 var renamer = require('../index');
 
 function rename(options, callback) {
