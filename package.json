@@ -1,0 +1,34 @@
+{
+  "name": "gulp-es6-imports-renamer",
+  "version": "0.1.0",
+  "description": "Gulp plugin for `es6-imports-renamer`, which renames paths from es6 import declarations.",
+  "license": "MIT",
+  "repository": "mairatma/gulp-es6-imports-renamer",
+  "author": {
+    "name": "Maira Bello",
+    "email": "maira.araujo@liferay.com"
+  },
+  "engines": {
+    "node": ">=0.11.0"
+  },
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "nodeunit test/test.js"
+  },
+  "keywords": [
+    "es6",
+    "import",
+    "module",
+    "rename",
+    "gulp"
+  ],
+  "dependencies": {
+    "es6-imports-renamer": "git://github.com/mairatma/es6-imports-renamer",
+    "recast": "^0.9.18",
+    "through2": "^0.6.1",
+    "vinyl-sourcemaps-apply": "^0.1.1"
+  }
+}
