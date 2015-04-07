@@ -26,7 +26,7 @@
     "gulp"
   ],
   "dependencies": {
-    "es6-imports-renamer": "^0.1.1",
+    "es6-imports-renamer": "^0.1.2",
     "gulp-util": "^3.0.1",
     "recast": "^0.9.18",
     "through2": "^0.6.1",
