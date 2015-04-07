@@ -1,6 +1,6 @@
 {
   "name": "gulp-es6-imports-renamer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Gulp plugin for `es6-imports-renamer`, which renames paths from es6 import declarations.",
   "license": "MIT",
   "repository": "mairatma/gulp-es6-imports-renamer",
