@@ -8,18 +8,11 @@ var through = require('through2');
 
 function Renamer(options) {
     options = options || {};
-    var basePath = options.basePath;
-    var configPath = options.configPath;
-    var sources = [];
+    options.sources = [];
 
     function flush(callback) {
-        if (configPath) {
-            var script = fs.readFileSync(configPath, 'utf8');
-            jsEval(script);
-        }
-
         var stream = this;
-        renamer({sources: sources, basePath: basePath}, function(results) {
+        renamer(options, function(results) {
             results.forEach(function(result) {
                 var rendered = recast.print(result.ast, {
                     sourceMapName: result.path
@@ -45,7 +38,7 @@ function Renamer(options) {
     }
 
     function renameInternal(file, encoding, callback) {
-        sources.push({
+        options.sources.push({
             ast: recast.parse(file.contents.toString(encoding)),
             path: file.path
         });
