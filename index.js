@@ -12,7 +12,7 @@ function Renamer(options) {
 
     function flush(callback) {
         var stream = this;
-        renamer(options, function(results) {
+        renamer(options, function(error, results) {
             results.forEach(function(result) {
                 var rendered = recast.print(result.ast, {
                     sourceMapName: result.path
