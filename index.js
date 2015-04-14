@@ -13,17 +13,21 @@ function Renamer(options) {
     function flush(callback) {
         var stream = this;
         renamer(options, function(error, results) {
-            results.forEach(function(result) {
-                var rendered = recast.print(result.ast, {
-                    sourceMapName: result.path
-                });
-                var file = new gutil.File({
-                    contents: new Buffer(rendered.code),
-                    path: result.path
-                });
-                sourceMap(file, rendered.map);
-                stream.push(file);
-            });
+            if (error) {
+                stream.emit('error', error);
+            } else {
+                results.forEach(function(result) {
+                    var rendered = recast.print(result.ast, {
+                        sourceMapName: result.path
+                    });
+                    var file = new gutil.File({
+                        contents: new Buffer(rendered.code),
+                        path: result.path
+                    });
+                    sourceMap(file, rendered.map);
+                    stream.push(file);
+                });   
+            }
 
             callback();
         });
