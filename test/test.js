@@ -2,10 +2,11 @@ var assert = require('assert');
 var fs = require('fs');
 var gutil = require('gulp-util');
 var path = require('path');
-var System = require('systemjs');
 var renamer = require('../index');
 
-function rename(options, callback) {
+var basePath = path.join(__dirname, 'fixtures');
+
+function rename(sources, options, callback, errorCallback) {
     var stream = renamer(options);
 
     var files = [];
@@ -15,7 +16,10 @@ function rename(options, callback) {
     stream.on('end', function() {
     	callback(files);
     });
-    options.sources.forEach(function(source) {
+    stream.on('error', function(error) {
+    	errorCallback && errorCallback(error);
+    });
+    sources.forEach(function(source) {
         stream.write(source);
     });
 
@@ -25,33 +29,49 @@ function rename(options, callback) {
 function loadStreamFile(filepath) {
     return new gutil.File({
         cwd: __dirname,
-        base: path.join(__dirname, 'fixtures'),
+        base: basePath,
         path: filepath,
         contents: fs.readFileSync(filepath)
     });
 }
 
-module.exports = {
-	// TODO: Fix tests
-	// testRenamer: function(test) {
-	// 	var basePath = path.join(__dirname, 'fixtures');
-	// 	System.baseURL = basePath;
-	// 	System.config({
-	// 		paths: {
-	// 			'*': '*.js',
-	// 			'deps:*': 'deps/*.js'
-	// 		},
-	// 		map: {
-	// 			'dependency1': 'deps:dependency1'
-	// 		}
-	// 	});
+function simpleRenameFn(originalPath, parentPath, callback) {
+	var renamed;
+	if (originalPath[0] === '.') {
+		renamed = path.resolve(path.dirname(parentPath), originalPath);
+	} else {
+		renamed = path.resolve('test/fixtures/deps', originalPath);
+	}
+	callback(null, renamed);
+}
 
-	// 	var sources = [loadStreamFile(path.join(basePath, 'src/foo.js'))];
-	// 	var remaining = 2;
-	// 	rename({sources: sources, basePath: basePath}, function(files) {
-	// 		assert.strictEqual(2, files.length);
-	// 		assert.strictEqual('import core from "deps/dependency1/core";', files[0].contents.toString('utf8'));
-	// 		test.done();
-	// 	});
-	// }
+module.exports = {
+	testRenamer: function(test) {
+		var sources = [loadStreamFile(path.join(basePath, 'src/foo.js'))];
+		rename(sources, {basePath: basePath, renameFn: simpleRenameFn}, function(files) {
+			assert.strictEqual(1, files.length);
+			assert.strictEqual('import core from "deps/dependency1/core";', files[0].contents.toString('utf8'));
+			test.done();
+		});
+	},
+
+	testError: function(test) {
+		var threwError = false;
+		var expectedError = new Error();
+		var errorFn = function() {
+			throw expectedError;
+		};
+		rename(
+			[loadStreamFile(path.join(basePath, 'src/foo.js'))],
+			{basePath: basePath, renameFn: errorFn},
+			function() {
+				assert.ok(threwError);
+				test.done();
+			},
+			function(error) {
+				assert.strictEqual(expectedError, error);
+				threwError = true;
+			}
+		);
+	}
 };
